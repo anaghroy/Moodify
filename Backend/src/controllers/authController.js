@@ -1,13 +1,13 @@
 const userModel = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { redisClient } = require("../config/redis");
 
 /**Cookie settings */
 const cookieOptions = {
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
   sameSite: "strict",
-  maxAge: 3 * 24 * 60 * 60 * 1000, // 3 days
 };
 async function registerUser(req, res) {
   try {
@@ -75,9 +75,11 @@ async function loginUser(req, res) {
     }
 
     /**Find user */
-    const user = await userModel.findOne({
-      $or: [{ email }, { username }],
-    });
+    const user = await userModel
+      .findOne({
+        $or: [{ email }, { username }],
+      })
+      .select("+password");
 
     /**Checking-2 User */
     if (!user) {
@@ -119,4 +121,39 @@ async function loginUser(req, res) {
   }
 }
 
-module.exports = { registerUser, loginUser };
+async function getMe(req, res) {
+  const user = await userModel.findById(req.user.id);
+  res.status(200).json({
+    message: "User details fetched successfully",
+    user,
+  });
+}
+
+async function logoutUser(req, res) {
+  try {
+    const token = req.cookies.token;
+    if (!token) {
+      return res.status(400).json({
+        message: "Token missing",
+      });
+    }
+
+    // decode token to get expiration time
+    const decoded = jwt.decode(token);
+    const expiry = Math.max(decoded.exp - Math.floor(Date.now() / 1000), 1);
+
+    //Store in redis
+    await redisClient.set(token, "blacklisted", { EX: expiry });
+    res.clearCookie("token", cookieOptions);
+
+    res.status(200).json({
+      message: "User logged out successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Internal Server Error",
+    });
+  }
+}
+
+module.exports = { registerUser, loginUser, getMe, logoutUser };
