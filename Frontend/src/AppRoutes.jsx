@@ -1,10 +1,12 @@
 import { BrowserRouter, Routes, Route, useLocation } from "react-router";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import { AnimatePresence } from "framer-motion";
 
 import FaceExpression from "./features/Expression/components/FaceExpression";
-import Login from "./features/auth/Login";
-import Register from "./features/auth/Register";
+import Login from "./features/auth/pages/Login";
+import Register from "./features/auth/pages/Register";
 
 // Animated Routes Wrapper
 const AnimatedRoutes = () => {
@@ -25,6 +27,7 @@ const AppRoutes = () => {
   return (
     <BrowserRouter>
       <AnimatedRoutes />
+      <ToastContainer position="top-right" autoClose={3000} theme="dark" />
     </BrowserRouter>
   );
 };

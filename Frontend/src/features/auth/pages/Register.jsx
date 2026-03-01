@@ -1,12 +1,44 @@
-import {Link} from "react-router"
-import logo from "../../assets/images/logo.png";
-import { Eye, KeyRound, Mail, User } from "lucide-react";
+import { Link } from "react-router";
+import logo from "../../../assets/images/logo.png";
+import { Eye, KeyRound, Mail, User, EyeOff } from "lucide-react";
 import { useNavigate, useLocation } from "react-router";
 import { motion } from "framer-motion";
+import { useState } from "react";
+import useRegister from "../hooks/useRegister";
+import { toast } from "react-toastify";
+
 const Register = () => {
+  const [showPassword, setShowPassword] = useState(false);
+
   const navigate = useNavigate();
   const location = useLocation();
 
+  const { register } = useRegister();
+  const [form, setForm] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+
+  /**Register function */
+  function handleChange(e) {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    const res = await register(form);
+
+    if (res?.success) {
+      toast.success("Account created successfully");
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
+    } else {
+      toast.error(res?.message || "Registration failed");
+    }
+  }
   return (
     <motion.div
       className="main-login"
@@ -46,34 +78,53 @@ const Register = () => {
           </button>
         </div>
         <div className="form-wrapper">
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="user">
               <User />
-              <input type="text" placeholder="Enter your username" required />
+              <input
+                type="text"
+                name="username"
+                placeholder="Enter your username"
+                required
+                onChange={handleChange}
+              />
             </div>
             <div className="mail">
               <Mail />
-              <input type="email" placeholder="name@example.com" required />
+              <input
+                type="email"
+                name="email"
+                placeholder="name@example.com"
+                required
+                onChange={handleChange}
+              />
             </div>
             <div className="pass">
               <KeyRound />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
+                name="password"
                 placeholder="Enter your password"
                 required
+                onChange={handleChange}
               />
-              <div className="eye">
-                <Eye />
+              <div
+                className="eye"
+                onClick={() => setShowPassword((prev) => !prev)}
+              >
+                {showPassword ? <EyeOff /> : <Eye />}
               </div>
             </div>
+            <div className="btn">
+              <button type="submit">Create Account</button>
+            </div>
           </form>
-          <div className="btn">
-            <button>Create Account</button>
-          </div>
           <div className="already">
             <p>
               Already have an account?{" "}
-              <Link to="/" className="signin-link">Sign In</Link>
+              <Link to="/" className="signin-link">
+                Sign In
+              </Link>
             </p>
           </div>
         </div>

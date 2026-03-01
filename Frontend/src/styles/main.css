@@ -158,6 +158,7 @@ body {
   outline: none;
   background-color: #0f0f13;
   color: whitesmoke;
+  font-size: 1rem;
 }
 .main-login .left .form-wrapper form ::-moz-placeholder {
   color: whitesmoke;
@@ -424,15 +425,14 @@ body {
 .main-login .left .form-wrapper form input {
   border: none;
   outline: none;
+  font-size: 1rem;
   background-color: #0f0f13;
 }
 .main-login .left .form-wrapper form ::-moz-placeholder {
   color: whitesmoke;
-  font-size: 1rem;
 }
 .main-login .left .form-wrapper form ::placeholder {
   color: whitesmoke;
-  font-size: 1rem;
 }
 .main-login .left .form-wrapper form .user {
   display: flex;

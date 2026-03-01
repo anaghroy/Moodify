@@ -1,11 +1,41 @@
-import logo from "../../assets/images/logo.png";
-import { Eye, FingerprintPattern, KeyRound, Mail } from "lucide-react";
+import logo from "../../../assets/images/logo.png";
+import { Eye, FingerprintPattern, KeyRound, Mail, EyeOff } from "lucide-react";
 import { useNavigate, useLocation } from "react-router";
 import { motion } from "framer-motion";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import useLogin from "../hooks/useLogin";
 
 const Login = () => {
+  const [showPassword, setShowPassword] = useState(false);
+
   const navigate = useNavigate();
   const location = useLocation();
+  const { login, loading } = useLogin();
+
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+
+  function handleChange(e) {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  }
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const toastId = toast.loading("Signing in...");
+
+    const res = await login(form);
+    toast.dismiss(toastId);
+    if (res.success) {
+      toast.success("login successful");
+      setTimeout(() => {
+        navigate("/faceExpression");
+      }, 1000);
+    } else {
+      toast.error(res.message);
+    }
+  }
 
   return (
     <motion.div
@@ -49,26 +79,39 @@ const Login = () => {
           </button>
         </div>
         <div className="form-wrapper">
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="mail">
               <Mail />
-              <input type="email" placeholder="name@example.com" required />
+              <input
+                type="email"
+                name="email"
+                placeholder="name@example.com"
+                required
+                onChange={handleChange}
+              />
             </div>
             <div className="pass">
               <KeyRound />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
+                name="password"
                 placeholder="Enter your password"
                 required
+                onChange={handleChange}
               />
-              <div className="eye">
-                <Eye />
+              <div
+                className="eye"
+                onClick={() => setShowPassword((prev) => !prev)}
+              >
+                {showPassword ? <EyeOff/> : <Eye/>}
               </div>
             </div>
+            <div className="btn">
+              <button type="submit" disabled={loading}>
+                {loading ? "Signing In..." : "Sign In"}
+              </button>
+            </div>
           </form>
-          <div className="btn">
-            <button>Sign In</button>
-          </div>
           <div className="with">
             <div className="line"></div>
             <p>OR CONTINUE WITH</p>

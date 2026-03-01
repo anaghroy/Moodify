@@ -8,10 +8,6 @@ redisClient.on("connect", () => {
   console.log("Redis Connected");
 });
 
-redisClient.on("ready", () => {
-  console.log("Redis Ready");
-});
-
 redisClient.on("error", (err) => {
   console.log("Redis Error:", err);
 });

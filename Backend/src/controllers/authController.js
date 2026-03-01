@@ -74,6 +74,9 @@ async function loginUser(req, res) {
       });
     }
 
+    const userEmail = Array.isArray(email) ? email[0] : email;
+    const userPassword = Array.isArray(password) ? password[0] : password;
+
     /**Find user */
     const user = await userModel
       .findOne({
@@ -88,7 +91,7 @@ async function loginUser(req, res) {
       });
     }
     /**Checking-1 Password */
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(userPassword, user.password);
 
     if (!isPasswordValid) {
       return res.status(400).json({

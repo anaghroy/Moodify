@@ -107,11 +107,12 @@
         input {
           border: none;
           outline: none;
+          font-size: 1rem;
           background-color: #0f0f13;
         }
         ::placeholder {
           color: whitesmoke;
-          font-size: 1rem;
+          
         }
         .user {
           display: flex;
