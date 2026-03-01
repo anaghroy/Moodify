@@ -1,0 +1,556 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  width: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--font-regular);
+  color: #ffffff;
+  background-color: #0b0b0b;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+
+/*scrollbar-background*/
+::-webkit-scrollbar {
+  background-color: #000000;
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(166, 166, 166, 0.523);
+  border-radius: 50px;
+}
+
+/*All fonts SRC*/
+@font-face {
+  font-family: regular;
+  src: url(../../assets/Fonts/PlayfairDisplay-Regular.ttf);
+}
+@font-face {
+  font-family: italic;
+  src: url(../../assets/Fonts/PlayfairDisplay-BoldItalic.ttf);
+}
+:root {
+  --font-regular: "regular", sans-serif;
+  --font-italic: "italic", sans-serif;
+}
+
+/*Layouts*/
+#root {
+  overflow-x: hidden;
+}
+
+.main-login {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  display: flex;
+  gap: 1rem;
+  padding: 2rem;
+  aspect-ratio: 1/0.6;
+}
+.main-login .left {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(to left bottom, #050348, #2d0797, #7136a1, #280449, #040008);
+  border-radius: 1rem;
+}
+.main-login .left .wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 2rem;
+}
+.main-login .left .wrapper img {
+  -o-object-fit: cover;
+     object-fit: cover;
+  width: 4.5rem;
+  -o-object-position: center;
+     object-position: center;
+}
+.main-login .left .wrapper p {
+  font-size: 1.5rem;
+  font-weight: 900;
+}
+.main-login .left .para-wrapper {
+  width: 100%;
+  padding-inline: 5rem;
+  padding-block: 1rem;
+}
+.main-login .left .para-wrapper p {
+  font-size: 4rem;
+}
+.main-login .left .para-wrapper span {
+  font-family: var(--font-italic);
+  background: linear-gradient(#69a2fa, #d57de1, #f373b8);
+  --webkit-background-clip: text;
+  --webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+}
+.main-login .left .text {
+  width: 100%;
+  padding-inline: 5rem;
+}
+.main-login .left .text p {
+  font-size: 1.3rem;
+  padding-block: 1rem;
+}
+.main-login .left .btn-wrapper {
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: 0.5rem;
+  margin-left: 4rem;
+  margin-top: 1rem;
+  border-radius: 2rem;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: center;
+  background-color: #0e0e0f;
+  border: 0.2rem solid #202020;
+}
+.main-login .left .btn-wrapper button {
+  border-radius: 1rem;
+  outline: none;
+  border: none;
+  padding-inline: 1rem;
+  padding-block: 0.5rem;
+  background-color: #0e0e0f;
+  color: #fff;
+  font-size: 1rem;
+  transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+  cursor: pointer;
+}
+.main-login .left .btn-wrapper button:hover {
+  background-color: #2d2d3b;
+}
+.main-login .left .btn-wrapper button.active {
+  background: linear-gradient(to right bottom, #335deb, #8d35ea);
+  color: whitesmoke;
+  box-shadow: 0 5px 15px rgba(141, 53, 234, 0.4);
+}
+.main-login .left .form-wrapper {
+  width: 100%;
+  padding: 3rem;
+}
+.main-login .left .form-wrapper form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.main-login .left .form-wrapper form input {
+  border: none;
+  outline: none;
+  background-color: #0f0f13;
+  color: whitesmoke;
+}
+.main-login .left .form-wrapper form ::-moz-placeholder {
+  color: whitesmoke;
+  font-size: 1rem;
+}
+.main-login .left .form-wrapper form ::placeholder {
+  color: whitesmoke;
+  font-size: 1rem;
+}
+.main-login .left .form-wrapper form .mail {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  border-radius: 2rem;
+  padding-inline: 2rem;
+  padding-block: 1rem;
+  border: none;
+  outline: none;
+  background-color: #0f0f13;
+}
+.main-login .left .form-wrapper form .pass {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  border-radius: 2rem;
+  padding-inline: 2rem;
+  padding-block: 1rem;
+  border: none;
+  outline: none;
+  background-color: #0f0f13;
+}
+.main-login .left .form-wrapper form .eye {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+}
+.main-login .left .btn {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+.main-login .left .btn button {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  border-radius: 2rem;
+  padding-block: 0.8rem;
+  padding-inline: 1.5rem;
+  font-size: 1.3rem;
+  outline: none;
+  border: none;
+  color: whitesmoke;
+  background: linear-gradient(to right bottom, #000000, #14213d);
+  cursor: pointer;
+}
+.main-login .left .btn button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: 0.5s;
+}
+.main-login .left .btn button:hover::before {
+  left: 100%;
+}
+.main-login .left .with {
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+.main-login .left .with p {
+  white-space: nowrap;
+  font-size: 1rem;
+  text-transform: uppercase;
+  color: #eae6e6;
+}
+.main-login .left .with .line {
+  flex: 1;
+  height: 1.5px;
+  background-color: #897a7a;
+}
+.main-login .left .google-btn {
+  width: 100%;
+  margin-top: 1rem;
+}
+.main-login .left .google-btn button {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  border-radius: 2rem;
+  padding-block: 0.8rem;
+  padding-inline: 1.5rem;
+  font-size: 1.3rem;
+  outline: none;
+  border: none;
+  color: whitesmoke;
+  background: linear-gradient(to right bottom, #2b2d42, #8d99ae);
+  cursor: pointer;
+}
+.main-login .left .google-btn button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: 0.5s;
+}
+.main-login .left .google-btn button:hover::before {
+  left: 100%;
+}
+.main-login .right {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  background-image: url(../../assets/images/music.jpg);
+  background-position: center;
+  background-size: cover;
+  border-radius: 1rem;
+}
+.main-login .right .para {
+  width: 100%;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.main-login .right .para p {
+  font-size: 3.1rem;
+}
+.main-login .right .para p .italic {
+  font-family: var(--font-italic);
+  background: linear-gradient(#69a2fa, #d57de1, #f373b8);
+  --webkit-background-clip: text;
+  --webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+}
+.main-login .right .para .analy {
+  font-size: 1.2rem;
+}
+
+#root {
+  overflow-x: hidden;
+}
+
+.main-login {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  display: flex;
+  gap: 1rem;
+  padding: 2rem;
+  aspect-ratio: 1/0.6;
+}
+.main-login .left {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(to left bottom, #050348, #2d0797, #7136a1, #280449, #040008);
+  border-radius: 1rem;
+}
+.main-login .left .wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 2rem;
+}
+.main-login .left .wrapper img {
+  -o-object-fit: cover;
+     object-fit: cover;
+  width: 4.5rem;
+  -o-object-position: center;
+     object-position: center;
+}
+.main-login .left .wrapper p {
+  font-size: 1.5rem;
+  font-weight: 900;
+}
+.main-login .left .para-wrapper-1 {
+  width: 100%;
+  padding-inline: 5rem;
+  padding-block: 1rem;
+}
+.main-login .left .para-wrapper-1 p {
+  font-size: 4rem;
+}
+.main-login .left .para-wrapper-1 span {
+  font-family: var(--font-italic);
+  background: linear-gradient(#69a2fa, #d57de1, #f373b8);
+  --webkit-background-clip: text;
+  --webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+}
+.main-login .left .text {
+  width: 100%;
+  padding-inline: 5rem;
+}
+.main-login .left .text p {
+  font-size: 1.3rem;
+  padding-block: 1rem;
+}
+.main-login .left .btn-wrapper {
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: 0.5rem;
+  margin-left: 4rem;
+  margin-top: 1rem;
+  border-radius: 2rem;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: center;
+  background-color: #0e0e0f;
+  border: 0.2rem solid #202020;
+}
+.main-login .left .btn-wrapper button {
+  border-radius: 1rem;
+  outline: none;
+  border: none;
+  padding-inline: 1rem;
+  padding-block: 0.5rem;
+  background-color: #0e0e0f;
+  color: #fff;
+  font-size: 1rem;
+  transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+  cursor: pointer;
+}
+.main-login .left .btn-wrapper button:hover {
+  background-color: #2d2d3b;
+}
+.main-login .left .btn-wrapper button.active {
+  background: linear-gradient(to right bottom, #335deb, #8d35ea);
+  color: whitesmoke;
+  box-shadow: 0 5px 15px rgba(141, 53, 234, 0.4);
+}
+.main-login .left .form-wrapper {
+  width: 100%;
+  padding: 3rem;
+}
+.main-login .left .form-wrapper form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.main-login .left .form-wrapper form input {
+  border: none;
+  outline: none;
+  background-color: #0f0f13;
+}
+.main-login .left .form-wrapper form ::-moz-placeholder {
+  color: whitesmoke;
+  font-size: 1rem;
+}
+.main-login .left .form-wrapper form ::placeholder {
+  color: whitesmoke;
+  font-size: 1rem;
+}
+.main-login .left .form-wrapper form .user {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  border-radius: 2rem;
+  padding-inline: 2rem;
+  padding-block: 1rem;
+  border: none;
+  outline: none;
+  background-color: #0f0f13;
+}
+.main-login .left .form-wrapper form .mail {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  border-radius: 2rem;
+  padding-inline: 2rem;
+  padding-block: 1rem;
+  border: none;
+  outline: none;
+  background-color: #0f0f13;
+}
+.main-login .left .form-wrapper form .pass {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  border-radius: 2rem;
+  padding-inline: 2rem;
+  padding-block: 1rem;
+  border: none;
+  outline: none;
+  background-color: #0f0f13;
+}
+.main-login .left .form-wrapper form .eye {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+}
+.main-login .left .form-wrapper .btn {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-block: 1rem;
+}
+.main-login .left .form-wrapper .btn button {
+  position: relative;
+  overflow: hidden;
+  border-radius: 2rem;
+  padding-block: 0.5rem;
+  padding-inline: 1rem;
+  font-size: 1.2rem;
+  outline: none;
+  border: none;
+  color: whitesmoke;
+  background: linear-gradient(to right bottom, #335deb, #8d35ea);
+  cursor: pointer;
+}
+.main-login .left .form-wrapper .btn button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: 0.5s;
+}
+.main-login .left .form-wrapper .btn button:hover::before {
+  left: 100%;
+}
+.main-login .left .form-wrapper .already {
+  width: 100%;
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+.main-login .left .form-wrapper .already p {
+  font-size: 1.1rem;
+}
+.main-login .left .form-wrapper .already .signin-link {
+  text-decoration: underline;
+  font-weight: 700;
+  color: #fcbf49;
+  cursor: pointer;
+}
+.main-login .right-text {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  background-image: url(../../assets/images/sound.jpg);
+  background-position: center;
+  background-size: cover;
+  border-radius: 1rem;
+}
+.main-login .right-text .para {
+  width: 100%;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.main-login .right-text .para p {
+  font-size: 4.1rem;
+}
+.main-login .right-text .para p .italic {
+  font-family: var(--font-italic);
+  background: linear-gradient(#49de83, #32d0c5, #57adf0);
+  --webkit-background-clip: text;
+  --webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+}
+.main-login .right-text .para .analy {
+  font-size: 1.2rem;
+}/*# sourceMappingURL=main.css.map */

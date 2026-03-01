@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import useFaceExpression from "../../hooks/useFaceExpression";
+import useFaceExpression from "../hooks/useFaceExpression";
 
 export default function FaceExpression() {
   const videoRef = useRef(null);
