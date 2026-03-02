@@ -10,3 +10,9 @@ export async function loginAPI(data) {
 
   return response.data;
 }
+
+export async function logOutAPI(data) {
+  const response = await axiosInstance.post("/auth/logout", data);
+
+  return response.data;
+}

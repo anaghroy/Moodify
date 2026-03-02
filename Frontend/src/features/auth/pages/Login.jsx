@@ -103,7 +103,7 @@ const Login = () => {
                 className="eye"
                 onClick={() => setShowPassword((prev) => !prev)}
               >
-                {showPassword ? <EyeOff/> : <Eye/>}
+                {showPassword ? <EyeOff /> : <Eye />}
               </div>
             </div>
             <div className="btn">
