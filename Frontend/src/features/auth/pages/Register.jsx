@@ -1,11 +1,21 @@
 import { Link } from "react-router";
 import logo from "../../../assets/images/logo.png";
-import { Eye, KeyRound, Mail, User, EyeOff } from "lucide-react";
+import {
+  Eye,
+  KeyRound,
+  Mail,
+  User,
+  EyeOff,
+  FingerprintPattern,
+} from "lucide-react";
 import { useNavigate, useLocation } from "react-router";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import useRegister from "../hooks/useRegister";
 import { toast } from "react-toastify";
+import { useGoogleLogin } from "@react-oauth/google";
+import { googleAuthAPI } from "../api/auth.api";
+import {} from "@react-oauth/google";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -39,6 +49,27 @@ const Register = () => {
       toast.error(res?.message || "Registration failed");
     }
   }
+
+  const passwordLength = form.password.length;
+  const isValidPassword = passwordLength >= 8;
+  const strengthPercent = Math.min((passwordLength / 8) * 100, 100);
+
+  const googleLogin = useGoogleLogin({
+    flow: "auth-code", 
+    onSuccess: async (codeResponse) => {
+      try {
+        const res = await googleAuthAPI(codeResponse.code);
+
+        toast.success(res.message);
+        navigate("/faceExpression");
+      } catch (error) {
+        toast.error(error.response?.data?.message || "Google login failed");
+      }
+    },
+    onError: () => {
+      toast.error("Google Login Failed");
+    },
+  });
   return (
     <motion.div
       className="main-login"
@@ -106,6 +137,8 @@ const Register = () => {
                 name="password"
                 placeholder="Enter your password"
                 required
+                minLength={8}
+                value={form.password}
                 onChange={handleChange}
               />
               <div
@@ -115,8 +148,25 @@ const Register = () => {
                 {showPassword ? <EyeOff /> : <Eye />}
               </div>
             </div>
+            <div className="password-meta">
+              <div className="strength-bar">
+                <div
+                  className={`strength-fill ${isValidPassword ? "valid" : ""}`}
+                  style={{ width: `${strengthPercent}%` }}
+                ></div>
+              </div>
+              <p className={isValidPassword ? "valid-text" : ""}>
+                Must be at least 8 characters
+              </p>
+            </div>
             <div className="btn">
               <button type="submit">Create Account</button>
+            </div>
+            <div className="google-btn">
+              <button type="button" onClick={() => googleLogin()}>
+                <FingerprintPattern />
+                Sign in with Google
+              </button>
             </div>
           </form>
           <div className="already">

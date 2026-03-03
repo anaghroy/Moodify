@@ -1,9 +1,10 @@
 import { create } from "zustand";
-import { loginAPI } from "../api/auth.api";
+import { getMeAPI, loginAPI } from "../api/auth.api";
 
 const useAuthStoreLogin = create((set) => ({
   user: null,
   loading: false,
+  checkingAuth: true,
 
   login: async (formData) => {
     try {
@@ -22,6 +23,15 @@ const useAuthStoreLogin = create((set) => ({
         success: false,
         message: error.response?.data?.message || "Login failed",
       };
+    }
+  },
+
+  checkAuth: async () => {
+    try {
+      const data = await getMeAPI();
+      set({ user: data.user, checkingAuth: false });
+    } catch (error) {
+      set({ user: null, checkingAuth: false });
     }
   },
 }));

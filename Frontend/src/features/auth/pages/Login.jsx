@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import useLogin from "../hooks/useLogin";
+import { useGoogleLogin } from "@react-oauth/google";
+import { googleAuthAPI } from "../api/auth.api";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -37,6 +39,22 @@ const Login = () => {
     }
   }
 
+  const googleLogin = useGoogleLogin({
+    flow: "auth-code",
+    onSuccess: async (codeResponse) => {
+      try {
+        const res = await googleAuthAPI(codeResponse.code);
+
+        toast.success(res.message);
+        navigate("/faceExpression");
+      } catch (error) {
+        toast.error(error.response?.data?.message || "Google login failed");
+      }
+    },
+    onError: () => {
+      toast.error("Google login failed");
+    },
+  });
   return (
     <motion.div
       className="main-login"
@@ -118,9 +136,9 @@ const Login = () => {
             <div className="line"></div>
           </div>
           <div className="google-btn">
-            <button>
+            <button type="button" onClick={() => googleLogin()}>
               <FingerprintPattern />
-              Sign in with Google
+              Log in with Google
             </button>
           </div>
         </div>

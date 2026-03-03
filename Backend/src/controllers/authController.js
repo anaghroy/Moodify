@@ -2,6 +2,7 @@ const userModel = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { redisClient } = require("../config/redis");
+const { OAuth2Client } = require("google-auth-library");
 
 /**Cookie settings */
 const cookieOptions = {
@@ -9,6 +10,12 @@ const cookieOptions = {
   secure: process.env.NODE_ENV === "production",
   sameSite: "strict",
 };
+const client = new OAuth2Client(
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET,
+  "http://localhost:5173",
+);
+
 async function registerUser(req, res) {
   try {
     const { username, email, password } = req.body;
@@ -73,14 +80,13 @@ async function loginUser(req, res) {
         message: "Credentials required",
       });
     }
-
     const userEmail = Array.isArray(email) ? email[0] : email;
     const userPassword = Array.isArray(password) ? password[0] : password;
 
     /**Find user */
     const user = await userModel
       .findOne({
-        $or: [{ email }, { username }],
+        $or: [{ email: userEmail }, { username }],
       })
       .select("+password");
 
@@ -88,6 +94,13 @@ async function loginUser(req, res) {
     if (!user) {
       return res.status(400).json({
         message: "Invalid credentials",
+      });
+    }
+
+    // Block
+    if (user.provider === "google") {
+      return res.status(400).json({
+        message: "Please login using google",
       });
     }
     /**Checking-1 Password */
@@ -118,6 +131,7 @@ async function loginUser(req, res) {
       },
     });
   } catch (error) {
+    console.error(error);
     return res.status(500).json({
       message: "Internal Server Error",
     });
@@ -159,4 +173,77 @@ async function logoutUser(req, res) {
   }
 }
 
-module.exports = { registerUser, loginUser, getMe, logoutUser };
+async function googleAuth(req, res) {
+  try {
+    const { code } = req.body;
+
+    if (!code) {
+      return res.status(400).json({
+        message: "Google token is required",
+      });
+    }
+
+    //Verify Google token
+    const { tokens } = await client.getToken(code);
+
+    if (!tokens.id_token) {
+      return res.status(400).json({
+        message: "Failed to retrieve id_token from Google",
+      });
+    }
+    const ticket = await client.verifyIdToken({
+      idToken: tokens.id_token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+
+    const { email, name, picture, sub } = payload;
+
+    if (!email) {
+      return res.status(400).json({
+        message: "Google account email not found",
+      });
+    }
+
+    //Check if user exists
+    let user = await userModel.findOne({ email });
+
+    //If user does not exists
+    if (!user) {
+      user = await userModel.create({
+        username: name,
+        email,
+        provider: "google",
+        googleId: sub,
+        picture,
+      });
+    }
+
+    // JWT
+    const token = jwt.sign(
+      {
+        id: user._id,
+        username: user.username,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "3d" },
+    );
+    res.cookie("token", token, cookieOptions);
+
+    return res.status(200).json({
+      message: "Google login successful",
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+      },
+    });
+  } catch (error) {
+    console.error("Google Auth Error:", error);
+    return res.status(401).json({
+      message: "Google authentication failed",
+    });
+  }
+}
+
+module.exports = { registerUser, loginUser, getMe, logoutUser, googleAuth };

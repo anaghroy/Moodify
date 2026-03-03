@@ -1,6 +1,3 @@
-// useSchema.pre("save", function(next){})
-// useSchema.post("save", function(next){})
-
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");

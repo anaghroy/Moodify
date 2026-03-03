@@ -16,3 +16,15 @@ export async function logOutAPI(data) {
 
   return response.data;
 }
+
+export async function getMeAPI() {
+  const response = await axiosInstance.get("/auth/get-me");
+
+  return response.data;
+}
+
+export async function googleAuthAPI(code) {
+  const response = await axiosInstance.post("/auth/google", { code });
+
+  return response.data;
+}
