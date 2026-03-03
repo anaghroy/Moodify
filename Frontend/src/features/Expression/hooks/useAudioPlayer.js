@@ -1,8 +1,12 @@
 import { useRef, useState, useEffect, useCallback } from "react";
+import useAudioContext from "./useAudioContext";
 
-const useAudioPlayer = (src) => {
-  const audioRef = useRef(null);
+const useAudioPlayer = (playlist = [], startIndex = 0) => {
+  const { audioRef } = useAudioContext();
   const lineRef = useRef(null);
+
+  const [currentIndex, setCurrentIndex] = useState(startIndex);
+  const currentTrack = playlist[currentIndex];
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -15,37 +19,51 @@ const useAudioPlayer = (src) => {
   // Play / Pause
   useEffect(() => {
     const audio = audioRef.current;
-    if (!audio || !src) return;
+    if (!audio || !currentTrack) return;
 
-    if (audio.src !== src) {
-      audio.src = src;
-      audio.load();
-    }
-  }, [src]);
+    audio.src = currentTrack.src;
+    audio.load();
+    audio.play().catch(() => {});
+  }, [currentTrack, audioRef]);
 
   const togglePlay = useCallback(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
-    audio.paused ? audio.play() : audio.pause();
-  }, []);
+    if (audio.paused) {
+      audio.play();
+    } else {
+      audio.pause();
+    }
+  }, [audioRef]);
 
   const toggleMute = useCallback(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
     audio.muted = !audio.muted;
-  }, []);
+  }, [audioRef]);
+
+  //NextTrack
+  const nextTrack = useCallback(() => {
+    if (!playlist.length) return;
+
+    setCurrentIndex((prev) => (prev === playlist.length - 1 ? 0 : prev + 1));
+  }, [playlist.length]);
+
+  //Prev Track
+  const prevTrack = useCallback(() => {
+    if (!playlist.length) return;
+    setCurrentIndex((prev) => (prev === 0 ? playlist.length - 1 : prev - 1));
+  }, [playlist.length]);
 
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
     const handlePlay = () => setIsPlaying(true);
     const handlePause = () => setIsPlaying(false);
+    const handleVolumeChange = () => setIsMuted(audio.muted);
 
-    const handleVolumeChange = () => {
-      setIsMuted(audio.muted);
-    };
     audio.addEventListener("play", handlePlay);
     audio.addEventListener("pause", handlePause);
     audio.addEventListener("volumechange", handleVolumeChange);
@@ -55,7 +73,7 @@ const useAudioPlayer = (src) => {
       audio.removeEventListener("pause", handlePause);
       audio.removeEventListener("volumechange", handleVolumeChange);
     };
-  }, []);
+  }, [audioRef]);
 
   // Seek by percent
   const seekToPercent = useCallback(
@@ -67,7 +85,7 @@ const useAudioPlayer = (src) => {
       audio.currentTime = newTime;
       setCurrentTime(newTime);
     },
-    [duration],
+    [duration, audioRef],
   );
 
   // Click seek
@@ -117,7 +135,7 @@ const useAudioPlayer = (src) => {
     const updateTime = () => setCurrentTime(audio.currentTime);
     const setAudioData = () => setDuration(audio.duration);
     const handleEnded = () => {
-      setCurrentTime(0);
+      nextTrack();
     };
 
     audio.addEventListener("timeupdate", updateTime);
@@ -129,7 +147,7 @@ const useAudioPlayer = (src) => {
       audio.removeEventListener("loadedmetadata", setAudioData);
       audio.removeEventListener("ended", handleEnded);
     };
-  }, []);
+  }, [audioRef, nextTrack]);
 
   // Format time
   const formatTime = useCallback((time) => {
@@ -154,6 +172,9 @@ const useAudioPlayer = (src) => {
     formatTime,
     isMuted,
     toggleMute,
+    currentTrack,
+    nextTrack,
+    prevTrack,
   };
 };
 

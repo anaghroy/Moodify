@@ -1,5 +1,6 @@
-import music from "../../../assets/images/music.jpg";
-import musicFile from "../../../assets/musics/Ehsaas.mp3";
+import { useState } from "react";
+import { songsByMood } from "../../data/songs";
+
 import {
   Ellipsis,
   MicVocal,
@@ -13,8 +14,9 @@ import {
 import useAudioPlayer from "../hooks/useAudioPlayer";
 
 const MusicPlayer = () => {
+  const [mood] = useState("Happy");
+  const playlist = songsByMood[mood] || [];
   const {
-    audioRef,
     lineRef,
     isPlaying,
     currentTime,
@@ -25,25 +27,27 @@ const MusicPlayer = () => {
     setIsDragging,
     formatTime,
     toggleMute,
+    currentTrack,
+    nextTrack,
+    prevTrack,
     isMuted,
-  } = useAudioPlayer(musicFile);
+  } = useAudioPlayer(playlist);
 
   return (
     <section className="music-wrapper">
-      <audio ref={audioRef} preload="metadata" />
       <div className="top-para">
         <p className="play">Playing Now</p>
         <div className="btn-para">
-          <p className="mood">Mood : Energetic</p>
+          <p className="mood">Mood : {mood}</p>
         </div>
       </div>
       <div className="musicplay-wrapper">
         <div className="top-wrapper">
           <div className="image">
-            <img src={music} alt="music" />
+            <img src={currentTrack?.cover} alt={currentTrack?.title} />
             <div className="title">
-              <p className="active">Electric Dreams</p>
-              <p>The Synthwave Collection</p>
+              <p className="active">{currentTrack?.title}</p>
+              <p>{currentTrack?.artist}</p>
             </div>
           </div>
           <div className="icons">
@@ -74,11 +78,11 @@ const MusicPlayer = () => {
             {isMuted ? <VolumeX /> : <Volume2 />}
           </div>
           <div className="effect">
-            <SkipBack />
+            <SkipBack onClick={prevTrack} />
             <div className="pause" onClick={togglePlay}>
               {isPlaying ? <Pause /> : <Play />}
             </div>
-            <SkipForward />
+            <SkipForward onClick={nextTrack} />
           </div>
         </div>
       </div>

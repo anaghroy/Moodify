@@ -42,25 +42,26 @@
     .top-wrapper {
       width: 100%;
       display: flex;
+      align-items: center;
+      justify-content: space-between;
       flex-direction: row;
       padding-block: 1rem;
       padding-inline: 1rem;
-      align-items: center;
       .image {
         display: flex;
         align-items: center;
         gap: 1rem;
         img {
-          width: 15%;
+          width: clamp(60px, 6vw, 90px);
+          height: clamp(60px, 6vw, 90px);
           object-fit: cover;
-          object-position: center;
-          border-radius: 1rem;
+          border-radius: 0.7rem;
         }
         .title {
           display: flex;
           flex-direction: column;
-
           gap: 0.4rem;
+
           .active {
             font-weight: 700;
             font-family: var(--font-special);
@@ -133,6 +134,7 @@
         flex-direction: row;
         align-items: center;
         gap: 1rem;
+        cursor: pointer;
         .pause {
           display: flex;
           align-items: center;
