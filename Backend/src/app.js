@@ -9,7 +9,9 @@ app.use(cookieParser());
 
 /**Routes */
 const authRoute = require("./routes/auth.route");
+const songRoute = require("./routes/song.route");
 
 app.use("/api/auth", authRoute);
+app.use("/api/song", songRoute);
 
 module.exports = app;

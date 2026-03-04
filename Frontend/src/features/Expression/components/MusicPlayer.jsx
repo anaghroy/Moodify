@@ -1,6 +1,5 @@
-import { useState } from "react";
-import { songsByMood } from "../../data/songs";
-
+import useSongs from "../hooks/useSongs";
+import defaultCover from "../../../assets/images/music.jpg";
 import {
   Ellipsis,
   MicVocal,
@@ -13,9 +12,8 @@ import {
 } from "lucide-react";
 import useAudioPlayer from "../hooks/useAudioPlayer";
 
-const MusicPlayer = () => {
-  const [mood] = useState("Happy");
-  const playlist = songsByMood[mood] || [];
+const MusicPlayer = ({ mood }) => {
+  const { currentSong } = useSongs(mood);
   const {
     lineRef,
     isPlaying,
@@ -27,11 +25,9 @@ const MusicPlayer = () => {
     setIsDragging,
     formatTime,
     toggleMute,
-    currentTrack,
-    nextTrack,
-    prevTrack,
     isMuted,
-  } = useAudioPlayer(playlist);
+  } = useAudioPlayer(currentSong?.audioUrl);
+
 
   return (
     <section className="music-wrapper">
@@ -44,10 +40,10 @@ const MusicPlayer = () => {
       <div className="musicplay-wrapper">
         <div className="top-wrapper">
           <div className="image">
-            <img src={currentTrack?.cover} alt={currentTrack?.title} />
+            <img src={currentSong?.coverUrl || defaultCover} alt="music" />
             <div className="title">
-              <p className="active">{currentTrack?.title}</p>
-              <p>{currentTrack?.artist}</p>
+              <p className="active">{currentSong?.title || "Loading..."}</p>
+              <p>{currentSong?.artist || "Unknown Artist"}</p>
             </div>
           </div>
           <div className="icons">
@@ -78,11 +74,11 @@ const MusicPlayer = () => {
             {isMuted ? <VolumeX /> : <Volume2 />}
           </div>
           <div className="effect">
-            <SkipBack onClick={prevTrack} />
+            <SkipBack />
             <div className="pause" onClick={togglePlay}>
               {isPlaying ? <Pause /> : <Play />}
             </div>
-            <SkipForward onClick={nextTrack} />
+            <SkipForward />
           </div>
         </div>
       </div>

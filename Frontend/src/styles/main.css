@@ -81,6 +81,8 @@ body {
   --btn-primary-hover: #dc2626;
   --btn-secondary: #0eea5e;
   --btn-secondary-hover: #22c55e;
+  --btn-third: #ffc838;
+  --btn-third-hover: #ebb223;
   /* Shadow */
   --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.4);
   /* Blur */
@@ -93,6 +95,8 @@ body {
   --transition: all 0.3s ease;
   --transition-player: background 0.15s linear;
   --transition-progress: left 0.15s linear;
+  --transition-image: transform 0.35s ease, box-shadow 0.35s ease;
+  --transform-image: scale(1.08);
 }
 
 /* LIGHT THEME */
@@ -125,12 +129,16 @@ body {
   --btn-primary-hover: #dc2626;
   --btn-secondary: #0eea5e;
   --btn-secondary-hover: #22c55e;
+  --btn-third: #ffc838;
+  --btn-third-hover: #a97e10;
   /* Shadow */
   --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
   /* Transition */
   --transition: all 0.3s ease;
   --transition-player: background 0.15s linear;
   --transition-progress: left 0.15s linear;
+  --transition-image: transform 0.35s ease, box-shadow 0.35s ease;
+  --transform-image: scale(1.08);
 }
 
 /*Layouts*/
@@ -817,7 +825,8 @@ body {
   /* Buttons */
 }
 .face-wrapper .detect-btn,
-.face-wrapper .stop-btn {
+.face-wrapper .stop-btn,
+.face-wrapper .capture {
   padding: 12px 26px;
   border-radius: var(--radius-md);
   border: none;
@@ -845,6 +854,14 @@ body {
 }
 .face-wrapper .stop-btn:hover {
   background-color: var(--btn-primary-hover);
+  transform: translateY(-2px);
+}
+.face-wrapper .capture {
+  background-color: var(--btn-third);
+  color: var(--text-primary);
+}
+.face-wrapper .capture:hover {
+  background-color: var(--btn-third-hover);
   transform: translateY(-2px);
 }
 
@@ -902,6 +919,7 @@ body {
   display: flex;
   align-items: center;
   gap: 1rem;
+  cursor: pointer;
 }
 .music-wrapper .musicplay-wrapper .top-wrapper .image img {
   width: clamp(60px, 6vw, 90px);
@@ -909,6 +927,11 @@ body {
   -o-object-fit: cover;
      object-fit: cover;
   border-radius: 0.7rem;
+  transition: var(--transition-image);
+}
+.music-wrapper .musicplay-wrapper .top-wrapper .image img:hover {
+  transform: var(transform-image);
+  box-shadow: var(--shadow-lg);
 }
 .music-wrapper .musicplay-wrapper .top-wrapper .image .title {
   display: flex;

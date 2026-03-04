@@ -24,16 +24,17 @@ export default function FaceExpression() {
     }
   }
 
+  // For theme state
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem("theme") || "dark";
   });
 
   const videoRef = useRef(null);
-  const { emotion, startDetection, stopDetection, isDetecting } =
+  const [capturedMood, setCapturedMood] = useState(null);
+  const { emotion, emotionLabel, startDetection, stopDetection, isDetecting } =
     useFaceExpression(videoRef);
 
   /**Local Storage */
-
   useEffect(() => {
     localStorage.setItem("theme", theme);
     if (theme === "light") {
@@ -90,9 +91,16 @@ export default function FaceExpression() {
               Stop Detection
             </button>
           )}
+          <button
+          className="capture"
+            disabled={!emotionLabel || emotionLabel === "Idle"}
+            onClick={() => setCapturedMood(emotionLabel)}
+          >
+            Capture Mood
+          </button>
         </div>
       </div>
-      <MusicPlayer/>
+      <MusicPlayer mood={capturedMood} />
     </div>
   );
 }

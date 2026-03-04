@@ -137,7 +137,8 @@
   }
   /* Buttons */
   .detect-btn,
-  .stop-btn {
+  .stop-btn,
+  .capture {
     padding: 12px 26px;
     border-radius: var(--radius-md);
     border: none;
@@ -165,6 +166,14 @@
 
   .stop-btn:hover {
     background-color: var(--btn-primary-hover);
+    transform: translateY(-2px);
+  }
+  .capture {
+    background-color: var(--btn-third);
+    color: var(--text-primary);
+  }
+  .capture:hover {
+    background-color: var(--btn-third-hover);
     transform: translateY(-2px);
   }
 }

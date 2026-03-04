@@ -51,11 +51,17 @@
         display: flex;
         align-items: center;
         gap: 1rem;
+        cursor: pointer;
         img {
           width: clamp(60px, 6vw, 90px);
           height: clamp(60px, 6vw, 90px);
           object-fit: cover;
           border-radius: 0.7rem;
+          transition: var(--transition-image);
+        }
+        img:hover {
+          transform: var(transform-image);
+          box-shadow: var(--shadow-lg);
         }
         .title {
           display: flex;

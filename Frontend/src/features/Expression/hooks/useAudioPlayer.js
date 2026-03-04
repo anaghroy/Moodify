@@ -1,12 +1,12 @@
 import { useRef, useState, useEffect, useCallback } from "react";
-import useAudioContext from "./useAudioContext";
+import { useAudioStore } from "../store/audio.store";
 
-const useAudioPlayer = (playlist = [], startIndex = 0) => {
-  const { audioRef } = useAudioContext();
+const useAudioPlayer = (src) => {
+  const audio = useAudioStore((state) => state.audio);
+  const setSrc = useAudioStore((state) => state.setSrc);
+
+  const audioRef = useRef(audio);
   const lineRef = useRef(null);
-
-  const [currentIndex, setCurrentIndex] = useState(startIndex);
-  const currentTrack = playlist[currentIndex];
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -15,16 +15,16 @@ const useAudioPlayer = (playlist = [], startIndex = 0) => {
   const [isDragging, setIsDragging] = useState(false);
 
   const progress = duration ? (currentTime / duration) * 100 : 0;
-
+  useEffect(() => {
+    if (audio) {
+      audioRef.current = audio;
+    }
+  }, [audio]);
   // Play / Pause
   useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio || !currentTrack) return;
-
-    audio.src = currentTrack.src;
-    audio.load();
-    audio.play().catch(() => {});
-  }, [currentTrack, audioRef]);
+    if (!src) return;
+    setSrc(src);
+  }, [src, setSrc]);
 
   const togglePlay = useCallback(() => {
     const audio = audioRef.current;
@@ -43,19 +43,6 @@ const useAudioPlayer = (playlist = [], startIndex = 0) => {
 
     audio.muted = !audio.muted;
   }, [audioRef]);
-
-  //NextTrack
-  const nextTrack = useCallback(() => {
-    if (!playlist.length) return;
-
-    setCurrentIndex((prev) => (prev === playlist.length - 1 ? 0 : prev + 1));
-  }, [playlist.length]);
-
-  //Prev Track
-  const prevTrack = useCallback(() => {
-    if (!playlist.length) return;
-    setCurrentIndex((prev) => (prev === 0 ? playlist.length - 1 : prev - 1));
-  }, [playlist.length]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -135,7 +122,7 @@ const useAudioPlayer = (playlist = [], startIndex = 0) => {
     const updateTime = () => setCurrentTime(audio.currentTime);
     const setAudioData = () => setDuration(audio.duration);
     const handleEnded = () => {
-      nextTrack();
+      setCurrentTime(0);
     };
 
     audio.addEventListener("timeupdate", updateTime);
@@ -147,7 +134,7 @@ const useAudioPlayer = (playlist = [], startIndex = 0) => {
       audio.removeEventListener("loadedmetadata", setAudioData);
       audio.removeEventListener("ended", handleEnded);
     };
-  }, [audioRef, nextTrack]);
+  }, [audioRef]);
 
   // Format time
   const formatTime = useCallback((time) => {
@@ -172,9 +159,6 @@ const useAudioPlayer = (playlist = [], startIndex = 0) => {
     formatTime,
     isMuted,
     toggleMute,
-    currentTrack,
-    nextTrack,
-    prevTrack,
   };
 };
 

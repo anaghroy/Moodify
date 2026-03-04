@@ -18,19 +18,22 @@ export default function useFaceExpression(videoRef) {
 
   const [emotion, setEmotion] = useState("Idle");
   const [isDetecting, setIsDetecting] = useState(false);
+  const [emotionLabel, setEmotionLabel] = useState("Idle");
+  const [liveEmotion, setLiveEmotion] = useState("Idle");
 
   /* UPDATE EMOTION */
-  function updateEmotion(value) {
-    if (emotionRef.current !== value) {
-      emotionRef.current = value;
-      setEmotion(value);
+  function updateEmotion(displayValue, labelValue) {
+    if (emotionRef.current !== displayValue) {
+      emotionRef.current = displayValue;
+      setEmotion(displayValue);
+      setEmotionLabel(labelValue);
     }
   }
 
   /* PROCESS FRAME */
   function processFrame(results) {
     if (!results.faceBlendshapes?.length) {
-      updateEmotion("No Face");
+      updateEmotion("No Face", "Idle");
       return;
     }
 
@@ -41,8 +44,10 @@ export default function useFaceExpression(videoRef) {
     const stableEmotion = smoothEmotion(emotion);
 
     const pose = detectHeadPose(results);
+    updateEmotion(stableEmotion, stableEmotion);
 
-    updateEmotion(`${emoji} ${stableEmotion} | ${pose}`);
+    const displayText = `${emoji} ${stableEmotion} | ${pose}`;
+    setLiveEmotion(displayText);
   }
 
   /* DETECTION LOOP */
@@ -127,7 +132,8 @@ export default function useFaceExpression(videoRef) {
   }, []);
 
   return {
-    emotion,
+    emotion: liveEmotion,
+    emotionLabel,
     startDetection,
     stopDetection,
     isDetecting,
