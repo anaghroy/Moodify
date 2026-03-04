@@ -23,6 +23,10 @@ const songSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    duration: {
+      type: Number,
+      default: null,
+    },
   },
   { timestamps: true },
 );

@@ -1,6 +1,7 @@
 const songModel = require("../models/song.model");
 const storageService = require("../services/storage.service");
 const id3 = require("node-id3");
+const mm = require("music-metadata");
 
 async function uploadSong(req, res) {
   try {
@@ -12,11 +13,16 @@ async function uploadSong(req, res) {
     const { mood } = req.body;
 
     let tags = {};
+    let duration = null;
     try {
       tags = id3.read(songBuffer);
+      const metadata = await mm.parseBuffer(songBuffer, "audio/mpeg");
+      duration = Math.round(metadata.format.duration);
     } catch (error) {
       tags = {};
+      duration = null;
     }
+    console.log(tags);
     const safeTitle = (tags.title || req.file.originalname.split(".")[0])
       .replace(/\s+/g, "-")
       .toLowerCase();
@@ -56,6 +62,7 @@ async function uploadSong(req, res) {
       mood,
       audioUrl: songFile.url,
       coverUrl: posterFile ? posterFile.url : null,
+      duration,
     });
 
     res.status(201).json({
@@ -84,4 +91,21 @@ async function getSong(req, res) {
   }
 }
 
-module.exports = { uploadSong, getSong };
+async function deleteSong(req, res) {
+  try {
+    const { id } = req.params;
+    const song = await songModel.findByIdAndDelete(id);
+
+    if (!song) {
+      return res.status(404).json({ message: "Song not found" });
+    }
+
+    res.status(200).json({ message: "Song deleted successfully" });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+}
+
+module.exports = { uploadSong, getSong, deleteSong };

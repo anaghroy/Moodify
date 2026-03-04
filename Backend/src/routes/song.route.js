@@ -1,13 +1,15 @@
-const express = require("express")
-const upload = require("../Middlewares/upload.middleware")
-const songController = require("../controllers/song.controller")
+const express = require("express");
+const upload = require("../Middlewares/upload.middleware");
+const songController = require("../controllers/song.controller");
 
-const router = express.Router()
+const router = express.Router();
 
 //upload a song
-router.post("/", upload.single("song"), songController.uploadSong)
+router.post("/", upload.single("song"), songController.uploadSong);
 
 // Get all songs OR filter by mood
-router.get("/", songController.getSong)
+router.get("/", songController.getSong);
+// Delete song
+router.delete("/:id", songController.deleteSong);
 
-module.exports = router
+module.exports = router;

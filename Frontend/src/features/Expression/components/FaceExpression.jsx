@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 import useLogout from "../../auth/hooks/useLogout";
 import MusicPlayer from "./MusicPlayer";
+import Playlists from "./Playlists";
 
 export default function FaceExpression() {
   const { logout } = useLogout();
@@ -71,34 +72,38 @@ export default function FaceExpression() {
           </div>
         </div>
       </nav>
-      <div className="face-wrapper">
-        <div className="frame">
-          <div className="camera-box">
-            <video ref={videoRef} autoPlay playsInline width={700} />
-            <div className="camera-overlay"></div>
-          </div>
-          <div className="emotion-box">
-            <h2>{emotion || "Waiting"}</h2>
-          </div>
-          <p>Current emotion tracked</p>
+      <div className="content-wrapper">
+        <div className="face-wrapper">
+          <div className="frame">
+            <div className="camera-box">
+              <video ref={videoRef} autoPlay playsInline width={700} />
+              <div className="camera-overlay"></div>
+            </div>
+            <div className="emotion-box">
+              <h2>{emotion || "Waiting"}</h2>
+            </div>
+            <p>Current emotion tracked</p>
 
-          {!isDetecting ? (
-            <button className="detect-btn" onClick={startDetection}>
-              Detect Expression
+            {!isDetecting ? (
+              <button className="detect-btn" onClick={startDetection}>
+                Detect Expression
+              </button>
+            ) : (
+              <button className="stop-btn" onClick={stopDetection}>
+                Stop Detection
+              </button>
+            )}
+            <button
+              className="capture"
+              disabled={!emotionLabel || emotionLabel === "Idle"}
+              onClick={() => setCapturedMood(emotionLabel)}
+            >
+              Capture Mood
             </button>
-          ) : (
-            <button className="stop-btn" onClick={stopDetection}>
-              Stop Detection
-            </button>
-          )}
-          <button
-          className="capture"
-            disabled={!emotionLabel || emotionLabel === "Idle"}
-            onClick={() => setCapturedMood(emotionLabel)}
-          >
-            Capture Mood
-          </button>
+          </div>
         </div>
+
+        <Playlists />
       </div>
       <MusicPlayer mood={capturedMood} />
     </div>
