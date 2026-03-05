@@ -16,14 +16,19 @@
     justify-content: space-between;
     align-items: flex-start;
     padding: 2rem;
-    .icon {
+    .title {
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       gap: 0.5rem;
       font-family: var(--font-special);
       color: var(--color-primary-light);
       font-size: 1.2rem;
       font-weight: 700;
+      letter-spacing: 1px;
+      span {
+        color: var(--text-muted);
+        font-size: 1rem;
+      }
     }
     .categories {
       display: flex;
@@ -34,7 +39,7 @@
       color: var(--text-secondary);
       padding-block: 0.5rem;
       padding-inline: 0.5rem;
-      border-radius: var(--radius-lg);
+      border-radius: var(--radius-md);
       cursor: pointer;
       user-select: none;
       transition: all 0.2s ease;
@@ -118,7 +123,7 @@
       gap: 1rem;
       padding: 1rem;
       background: var(--bg-third-color);
-      border-radius: var(--radius-lg);
+      border-radius: var(--radius-md);
       cursor: pointer;
       transition: background 0.2s ease;
 
@@ -133,7 +138,7 @@
       }
       &::-webkit-scrollbar-thumb {
         background-color: var(--progress-bg);
-        border-radius: 1rem;
+        border-radius: 1.5rem;
         &:hover {
           background-color: var(--color-primary-dark);
         }
@@ -187,13 +192,12 @@
         width: 2rem;
         height: 2rem;
         border-radius: var(--radius-lg);
-        border: 0.1rem solid var(--color-primary-dark);
+        background-color: var(--btn-primary);
         cursor: pointer;
         transition: var(--transition);
         &:hover {
-          background: rgba(239, 68, 68, 0.15);
           border-color: rgb(239, 68, 68);
-          color: rgb(239, 68, 68);
+          color: var(--player-bg);
         }
         &:active {
           transform: scale(0.92);

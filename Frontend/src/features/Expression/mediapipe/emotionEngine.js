@@ -4,17 +4,36 @@ export function detectEmotion(blendshapes) {
 
   const emotions = {
     Happy:
-      get("mouthSmileLeft") + get("mouthSmileRight") + get("cheekSquintLeft"),
+      get("mouthSmileLeft") * 2 +
+      get("mouthSmileRight") * 2 +
+      get("cheekSquintLeft") +
+      get("cheekSquintRight"),
 
-    Sad: get("mouthFrownLeft") + get("mouthFrownRight"),
+    Sad:
+      get("mouthFrownLeft") * 2 +
+      get("mouthFrownRight") * 2 +
+      get("browInnerUp") * 0.5 +
+      get("eyeSquintLeft") +
+      get("eyeSquintRight"),
 
-    Angry: get("browDownLeft") + get("browDownRight") + get("mouthPressLeft"),
+    Angry:
+      get("browDownLeft") * 2 +
+      get("browDownRight") * 2 +
+      get("mouthPressLeft") +
+      get("mouthPressRight") +
+      get("noseSneerLeft") +
+      get("noseSneerRight") +
+      get("jawForward"),
 
-    Surprise: get("jawOpen") + get("eyeWideLeft") + get("browInnerUp"),
+    Surprise:
+      get("jawOpen") * 1.5 +
+      get("eyeWideLeft") * 2 +
+      get("eyeWideRight") * 2 +
+      get("browInnerUp"),
 
     Talking: get("jawOpen"),
 
-    Blink: get("eyeBlinkLeft") + get("eyeBlinkRight"),
+    Blink: get("eyeBlinkLeft") * 2 + get("eyeBlinkRight") * 2,
   };
 
   const [emotion] = Object.entries(emotions).sort((a, b) => b[1] - a[1])[0];

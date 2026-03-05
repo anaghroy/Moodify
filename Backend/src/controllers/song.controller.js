@@ -3,6 +3,7 @@ const storageService = require("../services/storage.service");
 const id3 = require("node-id3");
 const mm = require("music-metadata");
 
+// Upload Songs
 async function uploadSong(req, res) {
   try {
     if (!req.file) {
@@ -74,6 +75,7 @@ async function uploadSong(req, res) {
   }
 }
 
+// Songs details
 async function getSong(req, res) {
   try {
     const { mood } = req.query;
@@ -91,6 +93,7 @@ async function getSong(req, res) {
   }
 }
 
+//Delete songs
 async function deleteSong(req, res) {
   try {
     const { id } = req.params;
