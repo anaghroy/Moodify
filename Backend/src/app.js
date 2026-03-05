@@ -11,7 +11,7 @@ app.use(
     credentials: true,
   }),
 );
-app.use(express.static(path.join(__dirname, "..", "Frontend", "public")));
+app.use(express.static("./public"));
 app.use(cookieParser());
 
 /**Routes */
@@ -21,8 +21,9 @@ const songRoute = require("./routes/song.route");
 app.use("/api/auth", authRoute);
 app.use("/api/song", songRoute);
 
-app.use("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "Frontend", "public", "index.html"));
+/**Universal method */
+app.use("*name", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "/public/index.html"));
 });
 
 module.exports = app;
