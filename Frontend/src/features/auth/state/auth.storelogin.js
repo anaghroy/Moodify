@@ -14,6 +14,7 @@ const useAuthStoreLogin = create((set) => ({
       set({
         user: data.user,
         loading: false,
+        checkingAuth: false,
       });
       return { success: true, message: data.message };
     } catch (error) {
@@ -31,7 +32,14 @@ const useAuthStoreLogin = create((set) => ({
       const data = await getMeAPI();
       set({ user: data.user, checkingAuth: false });
     } catch (error) {
-      set({ user: null, checkingAuth: false });
+      if(error.response?.status === 401){
+        set({ user: null, checkingAuth: false });
+      }else{
+        console.error("Auth check failed:", error)
+        set({ user: null, checkingAuth: false });
+      }
+      
+      
     }
   },
 }));

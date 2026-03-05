@@ -1,13 +1,9 @@
-import { useEffect } from "react";
 import { Navigate } from "react-router";
 import useAuthStoreLogin from "../../auth/state/auth.storelogin";
 
-const ProtectedRoute = ({ children }) => {
-  const { user, checkAuth, checkingAuth } = useAuthStoreLogin();
 
-  useEffect(() => {
-    checkAuth();
-  }, []);
+const ProtectedRoute = ({ children }) => {
+  const { user, checkingAuth } = useAuthStoreLogin();
 
   if (checkingAuth) {
     return <div>Loading...</div>;
@@ -16,6 +12,7 @@ const ProtectedRoute = ({ children }) => {
   if (!user) {
     return <Navigate to="/" replace />;
   }
+
   return children;
 };
 
