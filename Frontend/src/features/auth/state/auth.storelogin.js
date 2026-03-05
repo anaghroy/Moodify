@@ -14,8 +14,7 @@ const useAuthStoreLogin = create((set) => ({
       set({
         user: data.user,
         loading: false,
-        checkingAuth: false,
-      });
+        });
       return { success: true, message: data.message };
     } catch (error) {
       set({ loading: false });
