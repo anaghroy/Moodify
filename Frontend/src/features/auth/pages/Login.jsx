@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import useLogin from "../hooks/useLogin";
 import { useGoogleLogin } from "@react-oauth/google";
 import { googleAuthAPI } from "../api/auth.api";
+import useAuthStoreLogin from "../state/auth.storelogin";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -14,6 +15,7 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { login, loading } = useLogin();
+  const checkAuth = useAuthStoreLogin((state) => state.checkAuth);
 
   const [form, setForm] = useState({
     email: "",
@@ -31,9 +33,8 @@ const Login = () => {
     toast.dismiss(toastId);
     if (res.success) {
       toast.success("login successful");
-      setTimeout(() => {
-        navigate("/faceExpression");
-      }, 1000);
+      await checkAuth();
+      navigate("/faceExpression");
     } else {
       toast.error(res.message);
     }

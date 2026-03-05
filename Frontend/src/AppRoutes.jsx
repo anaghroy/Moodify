@@ -38,7 +38,8 @@ const AppRoutes = () => {
 
   useEffect(() => {
     checkAuth();
-  }, []);
+  }, [checkAuth]);
+
   return (
     <BrowserRouter>
       <AnimatedRoutes />
