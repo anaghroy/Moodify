@@ -14,6 +14,10 @@ app.use(
 
 app.use(cookieParser());
 
+app.get("/", (req, res) => {
+  res.json({ message: "Moodify API is running 🎵" });
+});
+
 /**Routes */
 const authRoute = require("./routes/auth.route");
 const songRoute = require("./routes/song.route");
