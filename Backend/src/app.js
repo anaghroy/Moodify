@@ -11,7 +11,7 @@ app.use(
     credentials: true,
   }),
 );
-app.use(express.static(path.join(__dirname, "..", "Frontend", "dist")));
+app.use(express.static(path.join(__dirname, "..", "Frontend", "public")));
 app.use(cookieParser());
 
 /**Routes */
@@ -22,7 +22,7 @@ app.use("/api/auth", authRoute);
 app.use("/api/song", songRoute);
 
 app.use("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "Frontend", "dist", "index.html"));
+  res.sendFile(path.join(__dirname, "..", "Frontend", "public", "index.html"));
 });
 
 module.exports = app;
