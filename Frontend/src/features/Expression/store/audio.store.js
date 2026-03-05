@@ -14,10 +14,5 @@ export const useAudioStore = create((set, get) => ({
     //Set new Source
     audio.src = src;
     audio.load();
-
-    // Autoplay new track
-    audio.play().catch(() => {
-      console.log("Autoplay blocked");
-    });
   },
 }));
