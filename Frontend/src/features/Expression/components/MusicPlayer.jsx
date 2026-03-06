@@ -42,7 +42,7 @@ const MusicPlayer = ({ mood, shouldPlay }) => {
             <img src={mood ? currentSong?.coverUrl : defaultCover} alt="music" />
             <div className="title">
               <p className="active">{mood ? currentSong?.title : "No song selected"}</p>
-              <p>{currentSong?.artist || "Unknown Artist"}</p>
+              <p>{mood ? currentSong?.artist : "Unknown Artist"}</p>
             </div>
           </div>
           <div className="icons">
