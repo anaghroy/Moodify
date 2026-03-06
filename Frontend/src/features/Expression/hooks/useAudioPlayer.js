@@ -23,18 +23,24 @@ const useAudioPlayer = (src, shouldPlay) => {
   // Play / Pause
   useEffect(() => {
     if (!src || !shouldPlay) return;
+    const audio = audioRef.current;
+    if (!audio) return;
     setSrc(src);
-    const audio = audioRef.current
-    if(audio){
+
+    const playAudio = () => {
       audio.currentTime = 0;
-      audio.play().catch(()=>{})
-    }
+      audio.play().catch(() => {});
+    };
+    audio.addEventListener("loadedmetadata", playAudio);
+    return () => {
+      audio.removeEventListener("loadedmetadata", playAudio);
+    };
   }, [src, shouldPlay, setSrc]);
 
   const togglePlay = useCallback(() => {
     const audio = audioRef.current;
     if (!audio) return;
-
+    console.log("paused:", audio.pause);
     if (audio.paused) {
       audio.play();
     } else {

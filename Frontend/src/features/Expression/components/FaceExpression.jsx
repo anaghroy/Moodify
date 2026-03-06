@@ -110,9 +110,8 @@ export default function FaceExpression() {
 
         <Playlists />
       </div>
-      {capturedMood && (
-        <MusicPlayer mood={capturedMood} shouldPlay={shouldPlay} />
-      )}
+
+      <MusicPlayer mood={capturedMood} shouldPlay={shouldPlay} />
     </div>
   );
 }

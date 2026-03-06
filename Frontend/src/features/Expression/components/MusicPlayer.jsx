@@ -27,7 +27,6 @@ const MusicPlayer = ({ mood, shouldPlay }) => {
     toggleMute,
     isMuted,
   } = useAudioPlayer(currentSong?.audioUrl, shouldPlay);
-  if (!mood) return null;
 
   return (
     <section className="music-wrapper">
@@ -40,9 +39,9 @@ const MusicPlayer = ({ mood, shouldPlay }) => {
       <div className="musicplay-wrapper">
         <div className="top-wrapper">
           <div className="image">
-            <img src={currentSong?.coverUrl || defaultCover} alt="music" />
+            <img src={mood ? currentSong?.coverUrl : defaultCover} alt="music" />
             <div className="title">
-              <p className="active">{currentSong?.title || "Loading..."}</p>
+              <p className="active">{mood ? currentSong?.title : "No song selected"}</p>
               <p>{currentSong?.artist || "Unknown Artist"}</p>
             </div>
           </div>
