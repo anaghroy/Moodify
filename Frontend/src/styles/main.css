@@ -683,7 +683,8 @@ body {
 
 .outer-wrapper {
   width: 100%;
-  height: 175vh;
+  height: 100vh;
+  display: flex;
   flex-direction: column;
   background: var(--bg-primary);
 }
@@ -883,6 +884,7 @@ body {
   align-items: center;
   justify-content: center;
   padding-top: 1.5rem;
+  background: var(--bg-primary);
 }
 .music-wrapper .top-para {
   width: 31%;

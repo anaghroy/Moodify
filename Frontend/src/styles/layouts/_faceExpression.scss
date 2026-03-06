@@ -1,6 +1,7 @@
 .outer-wrapper {
   width: 100%;
-  height: 175vh;
+  height: 100vh;
+  display: flex;
   flex-direction: column;
   background: var(--bg-primary);
   nav {
