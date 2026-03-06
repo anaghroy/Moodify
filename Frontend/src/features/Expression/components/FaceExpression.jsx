@@ -31,6 +31,7 @@ export default function FaceExpression() {
   });
 
   const videoRef = useRef(null);
+  const [shouldPlay, setShouldPlay] = useState(false);
   const [capturedMood, setCapturedMood] = useState(null);
   const { emotion, emotionLabel, startDetection, stopDetection, isDetecting } =
     useFaceExpression(videoRef);
@@ -99,6 +100,7 @@ export default function FaceExpression() {
               onClick={() => {
                 stopDetection();
                 setCapturedMood(emotionLabel);
+                setShouldPlay(true);
               }}
             >
               Capture Mood
@@ -108,7 +110,9 @@ export default function FaceExpression() {
 
         <Playlists />
       </div>
-      {capturedMood && <MusicPlayer mood={capturedMood} />}
+      {capturedMood && (
+        <MusicPlayer mood={capturedMood} shouldPlay={shouldPlay} />
+      )}
     </div>
   );
 }

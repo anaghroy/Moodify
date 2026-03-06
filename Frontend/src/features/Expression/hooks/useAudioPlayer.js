@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import { useAudioStore } from "../store/audio.store";
 
-const useAudioPlayer = (src) => {
+const useAudioPlayer = (src, shouldPlay) => {
   const audio = useAudioStore((state) => state.audio);
   const setSrc = useAudioStore((state) => state.setSrc);
 
@@ -22,9 +22,14 @@ const useAudioPlayer = (src) => {
   }, [audio]);
   // Play / Pause
   useEffect(() => {
-    if (!src) return;
+    if (!src || !shouldPlay) return;
     setSrc(src);
-  }, [src, setSrc]);
+    const audio = audioRef.current
+    if(audio){
+      audio.currentTime = 0;
+      audio.play().catch(()=>{})
+    }
+  }, [src, shouldPlay, setSrc]);
 
   const togglePlay = useCallback(() => {
     const audio = audioRef.current;

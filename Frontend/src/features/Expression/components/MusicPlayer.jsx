@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import useAudioPlayer from "../hooks/useAudioPlayer";
 
-const MusicPlayer = ({ mood }) => {
+const MusicPlayer = ({ mood, shouldPlay }) => {
   const { currentSong } = useSongs(mood);
   const {
     lineRef,
@@ -26,7 +26,7 @@ const MusicPlayer = ({ mood }) => {
     formatTime,
     toggleMute,
     isMuted,
-  } = useAudioPlayer(currentSong?.audioUrl);
+  } = useAudioPlayer(currentSong?.audioUrl, shouldPlay);
   if (!mood) return null;
 
   return (
