@@ -772,6 +772,7 @@ body {
 .content-wrapper {
   display: flex;
   flex-direction: row;
+  background: var(--bg-primary);
   width: 100%;
   flex: 1;
 }
