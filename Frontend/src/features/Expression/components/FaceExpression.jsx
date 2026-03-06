@@ -96,7 +96,10 @@ export default function FaceExpression() {
             <button
               className="capture"
               disabled={!emotionLabel || emotionLabel === "Idle"}
-              onClick={() =>  setCapturedMood(emotionLabel)}
+              onClick={() => {
+                stopDetection();
+                setCapturedMood(emotionLabel);
+              }}
             >
               Capture Mood
             </button>
