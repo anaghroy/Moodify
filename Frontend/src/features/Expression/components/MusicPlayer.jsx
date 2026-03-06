@@ -27,7 +27,7 @@ const MusicPlayer = ({ mood }) => {
     toggleMute,
     isMuted,
   } = useAudioPlayer(currentSong?.audioUrl);
-
+  if (!mood) return null;
 
   return (
     <section className="music-wrapper">

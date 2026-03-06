@@ -96,7 +96,7 @@ export default function FaceExpression() {
             <button
               className="capture"
               disabled={!emotionLabel || emotionLabel === "Idle"}
-              onClick={() => setCapturedMood(emotionLabel)}
+              onClick={() =>  setCapturedMood(emotionLabel)}
             >
               Capture Mood
             </button>
@@ -105,7 +105,7 @@ export default function FaceExpression() {
 
         <Playlists />
       </div>
-      <MusicPlayer mood={capturedMood} />
+      {capturedMood && <MusicPlayer mood={capturedMood} />}
     </div>
   );
 }
