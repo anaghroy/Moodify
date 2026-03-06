@@ -29,7 +29,11 @@ const useAudioPlayer = (src, shouldPlay) => {
 
     const playAudio = () => {
       audio.currentTime = 0;
-      audio.play().catch(() => {});
+      setTimeout(() => {
+        audio.play().catch((err) => {
+          console.log("Autoplay blocked:", err);
+        }, 100);
+      });
     };
     audio.addEventListener("loadedmetadata", playAudio);
     return () => {
